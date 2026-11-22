@@ -1,0 +1,35 @@
+# Правила ревью команды. Агент читает этот файл на каждом запуске —
+# чтобы добавить новое повторяющееся замечание, пересобирать ничего не нужно.
+provider: anthropic
+model: claude-sonnet-5-5
+maxFiles: 25
+maxFindingsPerFile: 5
+failOn: error        # error | warning | never
+
+exclude:
+  - "**/target/**"
+  - "**/*.lock"
+  - "**/generated/**"
+
+rules:
+  - id: npe-risk
+    severity: error
+    description: Разыменование значения, которое может быть null.
+  - id: swallowed-exception
+    severity: error
+    description: Пустой catch или catch без логирования и без повторного выброса.
+  - id: resource-leak
+    severity: error
+    description: Закрываемый ресурс создан без try-with-resources.
+  - id: secret-in-code
+    severity: error
+    description: Токен, пароль или ключ зашиты в коде вместо конфигурации.
+  - id: no-sout
+    severity: warning
+    description: Отладочный вывод через System.out вместо логгера.
+  - id: missing-test
+    severity: warning
+    description: Нетривиальная логика без тестов в этом же PR.
+  - id: todo-without-ticket
+    severity: info
+    description: TODO или FIXME без ссылки на тикет.
